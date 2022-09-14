@@ -1,0 +1,26 @@
+<?php 
+  $args = array(
+      'post_type' => 'videos',
+      'tax_query' => array(
+        array(
+            'taxonomy' => 'category',
+            'field' => 'slug',
+            'terms' => 'featuredvideos'
+        )
+    )
+  );
+  $the_query = new WP_Query($args); ?>
+<?php if ($the_query->have_posts()): ?>
+<?php while ($the_query->have_posts()):
+        $the_query->the_post();
+        $the_title     = get_the_title();
+        $the_content   = get_the_content();
+        $the_link      = get_permalink();
+        $thumbnail_url = get_the_post_thumbnail_url();
+        $youtube_id    = do_shortcode('[acf field="youtube_video_id"]'); 
+?>
+<?php echo $the_link; ?>
+<?php echo $youtube_id; ?>
+<?php echo $the_title; ?>
+<?php echo wp_trim_words(get_the_content(), 20, '...'); ?>
+<?php endwhile; wp_reset_postdata(); endif; ?>
